@@ -13,4 +13,9 @@ final class TofuTests: XCTestCase {
   func testTofuLevelOrder() throws {
     XCTAssertTrue(TofuLevel.Err > TofuLevel.Debug)
   }
+
+  func testLog() throws {
+    let logger = Tofu()
+    logger.debug("blah")
+  }
 }

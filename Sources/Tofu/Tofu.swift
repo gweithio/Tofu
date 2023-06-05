@@ -14,10 +14,14 @@ open class Tofu {
   }
 
   open func logFormat(
-    level: TofuLevel, _ message: @autoclosure @escaping () -> String, file: String = #file,
+    level: TofuLevel, message: @autoclosure @escaping () -> String, file: String = #file,
     function: String = #function, line: UInt = #line
   ) {
-    print("[\(level.rawValue)] \(function):\(line) \(message())")
+    let timestamp = DateFormatter.localizedString(from: Date(), dateStyle: .short, timeStyle: .medium)
+    let functionName = function.components(separatedBy: "(")[0]
+    let logMessage = "\(timestamp) [\(level.rawValue) \(functionName):\(line)]: \(message())"
+
+    print(logMessage)
   }
 
   @inlinable
@@ -25,7 +29,7 @@ open class Tofu {
     _ message: @autoclosure @escaping () -> String, file: String = #file,
     function: String = #function, line: UInt = #line
   ) {
-    logFormat(level: TofuLevel.Err, message())
+    logFormat(level: TofuLevel.Err, message: message())
   }
 
   @inlinable
@@ -33,7 +37,7 @@ open class Tofu {
     _ message: @autoclosure @escaping () -> String, file: String = #file,
     function: String = #function, line: UInt = #line
   ) {
-    logFormat(level: TofuLevel.Warn, message())
+    logFormat(level: TofuLevel.Warn, message: message())
   }
 
   @inlinable
@@ -41,7 +45,7 @@ open class Tofu {
     _ message: @autoclosure @escaping () -> String, file: String = #file,
     function: String = #function, line: UInt = #line
   ) {
-    logFormat(level: TofuLevel.Debug, message())
+    logFormat(level: TofuLevel.Debug, message: message())
   }
 
   @inlinable
@@ -49,6 +53,6 @@ open class Tofu {
     level: TofuLevel, _ message: @autoclosure @escaping () -> String, file: String = #file,
     function: String = #function, line: UInt = #line
   ) {
-    logFormat(level: TofuLevel.Log, message())
+    logFormat(level: TofuLevel.Log, message: message())
   }
 }
