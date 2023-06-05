@@ -1,0 +1,25 @@
+import Foundation
+
+public protocol TofuLevelP {
+  var rawValue: String { get }
+}
+
+public enum TofuLevel: TofuLevelP, Comparable {
+  case Err
+  case Warn
+  case Debug
+  case Log
+
+  public var rawValue: String {
+    switch self {
+    case .Err: return "Err"
+    case .Warn: return "Warn"
+    case .Debug: return "Debug"
+    case .Log: return "Log"
+    }
+  }
+
+  public static func < (lhs: Self, rhs: Self) -> Bool {
+    return lhs.rawValue < rhs.rawValue
+  }
+}

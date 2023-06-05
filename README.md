@@ -1,3 +1,3 @@
-# Tofu
+# Tofu - Dead Simple Logger
 
-A description of this package.
+Dead simple logger for Swift
