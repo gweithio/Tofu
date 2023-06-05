@@ -2,8 +2,10 @@ import Foundation
 
 open class Tofu {
   private var loggerLevel: TofuLevel
+  private let logFile: FileManager = .default
+  private let logFilePathAndName: String
 
-  public init(level: TofuLevel = TofuLevel.Debug) { self.loggerLevel = level }
+  public init(level: TofuLevel = TofuLevel.Debug, output fileName: String = "") { loggerLevel = level; logFilePathAndName = fileName }
 
   public func setLevel(to level: TofuLevel) {
     loggerLevel = level
@@ -19,7 +21,17 @@ open class Tofu {
   ) {
     let timestamp = DateFormatter.localizedString(from: Date(), dateStyle: .short, timeStyle: .medium)
     let functionName = function.components(separatedBy: "(")[0]
-    let logMessage = "\(timestamp) [\(level.rawValue) \(functionName):\(line)]: \(message())"
+    var logMessage = "\(timestamp) [\(level.rawValue) \(functionName):\(line)]: \(message())"
+
+    if !logFilePathAndName.isEmpty, !logFile.fileExists(atPath: logFilePathAndName) {
+      if !logFile.createFile(atPath: logFilePathAndName, contents: Data(), attributes: nil) {
+        print("Failed to create file \(logFilePathAndName)")
+      } else {
+        appendToFile(logMessage: &logMessage)
+      }
+    } else {
+      appendToFile(logMessage: &logMessage)
+    }
 
     print(logMessage)
   }
@@ -55,4 +67,30 @@ open class Tofu {
   ) {
     logFormat(level: TofuLevel.Log, message: message())
   }
+
+  @inlinable
+  open func critical(
+    level: TofuLevel, _ message: @autoclosure @escaping () -> String, file: String = #file,
+    function: String = #function, line: UInt = #line
+  ) {
+    logFormat(level: TofuLevel.Critical, message: message())
+  }
+
+  private func appendToFile(logMessage: inout String) {
+    logMessage.append(contentsOf: "\n")
+
+    let data = logMessage.data(using: .utf8)!
+
+    if let fileHandle = FileHandle(forWritingAtPath: logFilePathAndName) {
+      fileHandle.seekToEndOfFile()
+      fileHandle.write(data)
+      fileHandle.closeFile()
+    } else {
+      print("Failed to write to \(logFilePathAndName)")
+    }
+  }
+}
+
+enum TofuError: Error {
+  case fileCreateFail
 }

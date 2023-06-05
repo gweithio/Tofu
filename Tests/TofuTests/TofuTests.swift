@@ -15,7 +15,7 @@ final class TofuTests: XCTestCase {
   }
 
   func testLog() throws {
-    let logger = Tofu()
-    logger.debug("blah")
+    let logger = Tofu(output: "/Users/gweithio/log.txt")
+    logger.debug("Test String")
   }
 }

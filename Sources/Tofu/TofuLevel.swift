@@ -5,6 +5,7 @@ public protocol TofuLevelP {
 }
 
 public enum TofuLevel: TofuLevelP, Comparable {
+  case Critical
   case Err
   case Warn
   case Debug
@@ -12,6 +13,7 @@ public enum TofuLevel: TofuLevelP, Comparable {
 
   public var rawValue: String {
     switch self {
+    case .Critical: return "Critical"
     case .Err: return "Err"
     case .Warn: return "Warn"
     case .Debug: return "Debug"
