@@ -25,7 +25,7 @@ final class TofuTests: XCTestCase {
     let output = "/Users/gweithio/log.txt"
 
     let logger = Tofu(output: output)
-    logger.debug("Test String")
+    logger.debug("File Logged")
 
     XCTAssertTrue(fileChecker.fileExists(atPath: output))
   }
