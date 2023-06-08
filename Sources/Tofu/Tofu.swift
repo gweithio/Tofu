@@ -1,8 +1,8 @@
 import Foundation
 
 open class Tofu {
-  private var loggerLevel: TofuLevel
   private let logFile: FileManager = .default
+  private var loggerLevel: TofuLevel
   private let logFilePathAndName: String
 
   public init(level: TofuLevel = TofuLevel.Debug, output fileName: String = "") {
@@ -22,20 +22,22 @@ open class Tofu {
     level: TofuLevel, message: @autoclosure @escaping () -> String, file: String = #file,
     function: String = #function, line: UInt = #line
   ) {
+    var fileManager = FileSysManager(path: logFilePathAndName)
+
     let timestamp = DateFormatter.localizedString(
       from: Date(), dateStyle: .short, timeStyle: .medium
     )
     let functionName = function.components(separatedBy: "(")[0]
     var logMessage = "\(timestamp) [\(level.rawValue) \(functionName):\(line)]: \(message())"
 
-    if !logFilePathAndName.isEmpty, !logFile.fileExists(atPath: logFilePathAndName) {
-      if !logFile.createFile(atPath: logFilePathAndName, contents: Data(), attributes: nil) {
+    if fileManager.doesLogFileExist() {
+      if fileManager.createLogFile() {
         print("Failed to create file \(logFilePathAndName)")
       } else {
-        appendToFile(logMessage: &logMessage)
+        fileManager.insertLogMessage(logMessage: &logMessage)
       }
     } else {
-      appendToFile(logMessage: &logMessage)
+      fileManager.insertLogMessage(logMessage: &logMessage)
     }
 
     print(logMessage)
@@ -94,8 +96,4 @@ open class Tofu {
       print("Failed to write to \(logFilePathAndName)")
     }
   }
-}
-
-enum TofuError: Error {
-  case fileCreateFail
 }

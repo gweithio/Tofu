@@ -15,7 +15,18 @@ final class TofuTests: XCTestCase {
   }
 
   func testLog() throws {
-    let logger = Tofu(output: "/Users/gweithio/log.txt")
+    let logger = Tofu()
     logger.debug("Test String")
+  }
+
+  func testLogFile() throws {
+    let fileChecker = FileManager()
+
+    let output = "/Users/gweithio/log.txt"
+
+    let logger = Tofu(output: output)
+    logger.debug("Test String")
+
+    XCTAssertTrue(fileChecker.fileExists(atPath: output))
   }
 }

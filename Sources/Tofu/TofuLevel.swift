@@ -4,6 +4,7 @@ public protocol TofuLevelP {
   var rawValue: String { get }
 }
 
+@frozen
 public enum TofuLevel: TofuLevelP, Comparable {
   case Critical
   case Err
