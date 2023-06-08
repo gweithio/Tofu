@@ -5,7 +5,10 @@ open class Tofu {
   private let logFile: FileManager = .default
   private let logFilePathAndName: String
 
-  public init(level: TofuLevel = TofuLevel.Debug, output fileName: String = "") { loggerLevel = level; logFilePathAndName = fileName }
+  public init(level: TofuLevel = TofuLevel.Debug, output fileName: String = "") {
+    loggerLevel = level
+    logFilePathAndName = fileName
+  }
 
   public func setLevel(to level: TofuLevel) {
     loggerLevel = level
@@ -19,7 +22,9 @@ open class Tofu {
     level: TofuLevel, message: @autoclosure @escaping () -> String, file: String = #file,
     function: String = #function, line: UInt = #line
   ) {
-    let timestamp = DateFormatter.localizedString(from: Date(), dateStyle: .short, timeStyle: .medium)
+    let timestamp = DateFormatter.localizedString(
+      from: Date(), dateStyle: .short, timeStyle: .medium
+    )
     let functionName = function.components(separatedBy: "(")[0]
     var logMessage = "\(timestamp) [\(level.rawValue) \(functionName):\(line)]: \(message())"
 
