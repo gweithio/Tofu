@@ -7,7 +7,8 @@ struct FileSysManager {
   init(path: String) { self.path = path }
 
   public mutating func createLogFile() -> Bool {
-    return !doesLogFileExist() && manager.createFile(atPath: path, contents: Data(), attributes: nil)
+    return !doesLogFileExist()
+      && manager.createFile(atPath: path, contents: Data(), attributes: nil)
   }
 
   public mutating func doesLogFileExist() -> Bool {

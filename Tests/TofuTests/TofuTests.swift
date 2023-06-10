@@ -1,6 +1,6 @@
-@testable import Tofu
-
 import XCTest
+
+@testable import Tofu
 
 final class TofuTests: XCTestCase {
   func testLogLevels() throws {
