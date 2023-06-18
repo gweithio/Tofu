@@ -1,21 +1,17 @@
 import Foundation
 
-open class Tofu {
+open class Tofu: TofuOperators {
     private let logFile: FileManager = .default
     private var loggerLevel: TofuLevel
     private let logFilePathAndName: String
 
-    public init(level: TofuLevel = TofuLevel.Debug, output fileName: String = "") {
+    public required init(level: TofuLevel = TofuLevel.Debug, output fileName: String = "") {
         loggerLevel = level
         logFilePathAndName = fileName
     }
 
     public func setLevel(to level: TofuLevel) {
         loggerLevel = level
-    }
-
-    public final class func == (lhs: Tofu, rhs: Tofu) -> Bool {
-        return lhs.loggerLevel == rhs.loggerLevel
     }
 
     open func logFormat(
@@ -95,5 +91,17 @@ open class Tofu {
         } else {
             print("Failed to write to \(logFilePathAndName)")
         }
+    }
+
+    public final class func == (lhs: Tofu, rhs: Tofu) -> Bool {
+        return lhs.loggerLevel == rhs.loggerLevel
+    }
+
+    public final class func < (lhs: Tofu, rhs: Tofu) -> Bool {
+        return lhs.loggerLevel < rhs.loggerLevel
+    }
+
+    public final class func > (lhs: Tofu, rhs: Tofu) -> Bool {
+        return lhs.loggerLevel > rhs.loggerLevel
     }
 }

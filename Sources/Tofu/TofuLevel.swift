@@ -1,11 +1,11 @@
 import Foundation
 
-public protocol TofuLevelP {
+protocol TofuLevelRaw {
     var rawValue: String { get }
 }
 
 @frozen
-public enum TofuLevel: TofuLevelP, Comparable {
+public enum TofuLevel: TofuLevelRaw, TofuOperators {
     case Critical
     case Err
     case Warn
@@ -22,7 +22,15 @@ public enum TofuLevel: TofuLevelP, Comparable {
         }
     }
 
-    public static func < (lhs: Self, rhs: Self) -> Bool {
+    public static func < (lhs: TofuLevel, rhs: TofuLevel) -> Bool {
         return lhs.rawValue < rhs.rawValue
+    }
+
+    public static func > (lhs: TofuLevel, rhs: TofuLevel) -> Bool {
+        return lhs.rawValue > rhs.rawValue
+    }
+
+    public static func == (lhs: TofuLevel, rhs: TofuLevel) -> Bool {
+        return lhs.rawValue == rhs.rawValue
     }
 }
